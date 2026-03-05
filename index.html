@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>행운의 로또 5세트 생성기</title>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f7f6;
+            padding: 20px;
+        }
+
+        h1 { color: #333; margin-bottom: 20px; }
+
+        #lotto-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* 줄 사이 간격 */
+            margin-bottom: 30px;
+        }
+
+        .lotto-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .row-label {
+            font-weight: bold;
+            color: #888;
+            margin-right: 10px;
+            width: 30px;
+        }
+
+        .ball {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            color: white;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+        }
+
+        /* 로또 공식 색상 기준 */
+        .ball.n1 { background-color: #fbc400; } /* 1~10 */
+        .ball.n2 { background-color: #69c8f2; } /* 11~20 */
+        .ball.n3 { background-color: #ff7272; } /* 21~30 */
+        .ball.n4 { background-color: #aaa; }    /* 31~40 */
+        .ball.n5 { background-color: #b0d840; } /* 41~45 */
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        button:hover { background-color: #357abd; transform: translateY(-2px); }
+        button:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+
+    <h1>🍀 이번 주 행운의 5게임</h1>
+
+    <div id="lotto-wrapper">
+        </div>
+
+    <button onclick="generateLottoFive()">번호 5세트 추출하기</button>
+
+    <script>
+        function generateLottoFive() {
+            const wrapper = document.getElementById('lotto-wrapper');
+            wrapper.innerHTML = ''; // 화면 초기화
+
+            const alphabet = ['A', 'B', 'C', 'D', 'E'];
+
+            // 5번 반복하여 5세트 생성
+            for (let i = 0; i < 5; i++) {
+                let numbers = [];
+                
+                // 중복 없이 6개 뽑기
+                while (numbers.length < 6) {
+                    let randNum = Math.floor(Math.random() * 45) + 1;
+                    if (!numbers.includes(randNum)) {
+                        numbers.push(randNum);
+                    }
+                }
+
+                // 정렬
+                numbers.sort((a, b) => a - b);
+
+                // HTML 요소 생성
+                const row = document.createElement('div');
+                row.classList.add('lotto-row');
+
+                // 행 라벨 (A, B, C, D, E)
+                const label = document.createElement('span');
+                label.classList.add('row-label');
+                label.innerText = alphabet[i];
+                row.appendChild(label);
+
+                // 공 추가
+                numbers.forEach(num => {
+                    const ball = document.createElement('div');
+                    ball.classList.add('ball');
+                    ball.innerText = num;
+                    
+                    // 색상 클래스 배정
+                    if (num <= 10) ball.classList.add('n1');
+                    else if (num <= 20) ball.classList.add('n2');
+                    else if (num <= 30) ball.classList.add('n3');
+                    else if (num <= 40) ball.classList.add('n4');
+                    else ball.classList.add('n5');
+
+                    row.appendChild(ball);
+                });
+
+                wrapper.appendChild(row);
+            }
+        }
+    </script>
+</body>
+</html>
